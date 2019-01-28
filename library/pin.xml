@@ -1,0 +1,150 @@
+<xml xmlns="http://www.w3.org/1999/xhtml"><block type="factory_base" id="h^+ypZrQRe:,R?$S(z%Q" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">machine_Pin</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="qS5xrq4[#fu2k)eVS?zn">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="PdQti14JqfOF+SrO-sdo">
+            <field name="TEXT">set</field>
+            <next>
+              <block type="field_variable" id=")[xXKCbT%7Y`{dHc)0lU">
+                <field name="TEXT">item</field>
+                <field name="FIELDNAME">NAME</field>
+                <next>
+                  <block type="field_static" id="]|hue`?;s!qx|l;ssC~K">
+                    <field name="TEXT">as Pin</field>
+                    <next>
+                      <block type="field_number" id=".+-SnFABFG3Mr;#+cf(a">
+                        <field name="VALUE">0</field>
+                        <field name="FIELDNAME">pin</field>
+                        <field name="MIN">-Infinity</field>
+                        <field name="MAX">Infinity</field>
+                        <field name="PRECISION">0</field>
+                        <next>
+                          <block type="field_static" id="C)rd0r:P,/[XJ%4Pg9Zk">
+                            <field name="TEXT">mode</field>
+                            <next>
+                              <block type="field_dropdown" id="O`$*f~x9L9;[b_{^^5xf">
+                                <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                                <field name="FIELDNAME">mode</field>
+                                <field name="USER0">OUT</field>
+                                <field name="CPU0">Pin.IN</field>
+                                <field name="USER1">IN</field>
+                                <field name="CPU1">Pin.OUT</field>
+                                <field name="USER2">OPEN_DRAIN</field>
+                                <field name="CPU2">Pin.OPEN_DRAIN</field>
+                                <next>
+                                  <block type="field_static" id="|Tz6BC4u:!G:1rb|h^|.">
+                                    <field name="TEXT">pull</field>
+                                    <next>
+                                      <block type="field_dropdown" id="YXhGTT]R?q*r,(08MbKh">
+                                        <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                                        <field name="FIELDNAME">pull</field>
+                                        <field name="USER0">None</field>
+                                        <field name="CPU0">None</field>
+                                        <field name="USER1">Up</field>
+                                        <field name="CPU1">Pin.PULL_UP</field>
+                                        <field name="USER2">Down</field>
+                                        <field name="CPU2">Pin.PULL_DOWN</field>
+                                      </block>
+                                    </next>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="Ru-=??T@bGS4iym81t1i" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="i.G*5XLTFX]x#91%xl(A" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="@mfD^o?Sf-7tmH9p[Mk_"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="[SfV;bmqe[%@l76-p~Y+"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="l]vtKFp@N%6liG[HjcNJ">
+        <mutation colour="#5b67a5"></mutation>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id=";CI?Q15f~~nmu:(4/7dw" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">set_pin_value</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="}F[h?4*7i6G^^K2;Dv8a">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="a#HHMgIKXrq(6YiYCo{O">
+            <field name="TEXT">set</field>
+            <next>
+              <block type="field_variable" id="yQK0L(V=FnlLfVR2i%i]">
+                <field name="TEXT">item</field>
+                <field name="FIELDNAME">NAME</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <next>
+          <block type="input_dummy" id="gXz-dq?Qq5dR*$=M}j=?">
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_dropdown" id="IrdaoFd|P4=r.}JzJ(%B">
+                <mutation options="[&quot;text&quot;,&quot;text&quot;]"></mutation>
+                <field name="FIELDNAME">value</field>
+                <field name="USER0">On</field>
+                <field name="CPU0">pin.value(1)</field>
+                <field name="USER1">Off</field>
+                <field name="CPU1">pin.value(0)</field>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="u5A;@TvM#4;4iH=B7Wh(" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="yyO:luGz$SvdA++PDrZ~" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="2R=c/iKHOgC+D/eMrJeE"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="QxtHwSYfmF$-nf1Kc.yv"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id=")+Du]t1D$t*b)0fp?Vj)">
+        <mutation colour="#5b67a5"></mutation>
+        <field name="HUE">230</field>
+      </block>
+    </value>
+  </block></xml>

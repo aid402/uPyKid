@@ -1,0 +1,400 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>uPyKid</title>
+  <link href="fontawesome/css/fontawesome.css" rel="stylesheet">
+  <link href="fontawesome/css/solid.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="css/style2.css">
+  <link rel="stylesheet" type="text/css" href="css/blockly.css">
+  <link rel="stylesheet" type="text/css" href="css/modal.css">
+  <script src="blockly_compressed.js"></script>
+  <script src="blocks_compressed.js"></script>
+  <script src="python_compressed.js"></script>
+  <script src="micropython.js"></script>
+  <script src="blocks_kidbright.js"></script>
+  <script src="en.js"></script>
+  <script src="js/term0.js"></script>
+  <script src="js/FileSaver.js"></script>
+  <script src="js/storage.js"></script>
+
+</head>
+<body>
+  <div id="toolbar" class="bg-blue">
+    <a class="bg-seablue icon-bar" onclick="set_mode(); return false;">
+      <i id="btn_mode" class="fa fa-code" data-toggle="tooltip" title="Advance mode"></i>
+    </a>
+    <a class="toolbar">
+      <form>
+          <input type="text" id="file_name" style="width: 12em;" placeholder="File Name"/>
+          <button type="submit" id="put-file-button" onclick="save_file()(); return false;" data-toggle="tooltip" title="Save to board">
+            <i class="icon fa fa-download"></i>
+          </button>
+      </form>
+    </a>
+    <div class="tool-right">
+      <a class="toolbar">
+        <button class="trigger" id="connect_btn" data-toggle="tooltip" title="Connect">
+          <i class="icon fa fa-link"></i>
+        </button>
+        <button type="button" id="config_btn" onclick="config(); return false;" data-toggle="tooltip" title="Config">
+          <i class="icon fa fa-cog"></i>
+        </button>
+      </a>
+    </div>
+  </div>
+
+  <div id = coding>
+    <div id="basic">
+      <div id="blocklyArea">
+        <div id="blocklyDiv"></div>
+      </div>
+    </div>
+    <div id="advance" class="bg-terminal" >
+      <div id="editor_toolbar" class="bg-blue_gray80">
+        <div class="icon-bar-vertical" id="generate-button" onclick="generate(); return false;" data-toggle="tooltip" title="Get code from Blockly">
+          <i class="fa fa-bolt"></i>
+        </div>
+        <div class="icon-bar-vertical" id="open-code-button" data-toggle="tooltip" title="Open">
+          <i class="fa fa-folder-open"></i>
+        </div>
+        <div class="icon-bar-vertical" id="save-code-button" data-toggle="tooltip" title="Save">
+          <i class="fa fa-save"></i>
+        </div>
+        <div class="icon-bar-vertical" id="undo-button" data-toggle="tooltip" title="Undo">
+          <i class="fa fa-reply"></i>
+        </div>
+        <div class="icon-bar-vertical" id="clear-editor-button" data-toggle="tooltip" title="Clear editor">
+          <i class="fa fa-backspace"></i>
+        </div>
+      </div>
+      <div id="editor"></div>
+      <div id="terminal_toolbar" class="bg-blue_gray80">
+        <div class="icon-bar-vertical" id="list-file-button">
+          <i class="fa fa-microchip"></i>
+        </div>
+        <div class="icon-bar-vertical" id="send-code-button" onclick="send_code(); return false;" data-toggle="tooltip" title="Send code to board">
+          <i class="fa fa-arrow-right "></i>
+        </div>
+        <div class="icon-bar-vertical" id="run_button" onclick="send_ctrl_D(); return false;" data-toggle="tooltip" title="Run code">
+          <i class="fa fa-play-circle"></i>
+        </div>
+        <div class="icon-bar-vertical" id="terminate_button" onclick="send_kill(); return false;" data-toggle="tooltip" title="Stop">
+          <i class="fa fa-stop-circle"></i>
+        </div>
+        <div class="icon-bar-vertical" id="reset_term_button" onclick="reset_terminal(); return false;" data-toggle="tooltip" title="Clear terminal">
+          <i class="fa fa-backspace"></i>
+        </div>
+        <div class="icon-bar-vertical" onclick="terminal_hidden(); return false;" data-toggle="tooltip" title="Hide terminal">
+          <i id="hide_term_button" class="fa fa-forward"></i>
+        </div>
+      </div>
+      <div id="terminalArea">
+        <div id="term"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        Wifi connect to device
+        <span class="close-button">&times;</span>
+      </div>
+      <div class="modal-body ">
+        <form>
+          <input type="text" id="url" style="width: 12em;" placeholder="Address" />
+          <input type="password" id="password" style="width: 9em;" placeholder="Password" />
+          <button type="submit" onclick="button_click(); return false;" data-toggle="tooltip" title="Connect">
+            Connect
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <xml id="toolbox" style="display: none">
+    <category name="Advance" expanded="true">
+      <category name="Pin" colour=230>
+        <block type="machine_pin"></block>
+        <block type="set_pin_value"></block>
+      </category>
+      <category name="Time" colour=#2ecc71>
+        <block type="time_delay"></block>
+      </category>
+    </category>
+    <sep></sep>
+    <category name="Logic" colour="%{BKY_LOGIC_HUE}">
+        <block type="controls_if"></block>
+        <block type="logic_compare"></block>
+        <block type="logic_operation"></block>
+        <block type="logic_negate"></block>
+        <block type="logic_boolean"></block>
+        <block type="logic_null"></block>
+        <block type="logic_ternary"></block>
+    </category>
+    <sep gap="64"></sep>
+    <category name="Loops" colour="%{BKY_LOOPS_HUE}">
+      <block type="controls_repeat_ext">
+        <value name="TIMES">
+          <block type="m_number">
+            <field name="NUM">10</field>
+          </block>
+        </value>
+      </block>
+      <block type="controls_whileUntil"></block>
+      <block type="controls_for">
+        <field name="VAR">i</field>
+        <value name="FROM">
+          <block type="m_number">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+        <value name="TO">
+          <block type="m_number">
+            <field name="NUM">10</field>
+          </block>
+        </value>
+        <value name="BY">
+          <block type="m_number">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+      </block>
+      <block type="controls_forEach"></block>
+      <block type="controls_flow_statements"></block>
+    </category>
+    <sep></sep>
+    <category name="Math" colour="%{BKY_MATH_HUE}">
+      <block type="m_number">
+        <field name="NUM">123</field>
+      </block>
+      <block type="m_arithmetic"></block>
+      <block type="math_single"></block>
+      <block type="math_trig"></block>
+      <block type="math_constant"></block>
+      <block type="m_number_property"></block>
+      <block type="math_round"></block>
+      <block type="math_on_list"></block>
+      <block type="math_modulo"></block>
+      <block type="math_constrain">
+        <value name="LOW">
+          <block type="m_number">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+        <value name="HIGH">
+          <block type="m_number">
+            <field name="NUM">100</field>
+          </block>
+        </value>
+      </block>
+      <block type="math_random_int">
+        <value name="FROM">
+          <block type="m_number">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+        <value name="TO">
+          <block type="m_number">
+            <field name="NUM">100</field>
+          </block>
+        </value>
+      </block>
+      <block type="math_random_float"></block>
+      <block type="math_atan2"></block>
+    </category>
+    <sep></sep>
+    <category name="Texts" colour="%{BKY_TEXTS_HUE}">
+      <block type="text"></block>
+      <block type="text_join"></block>
+      <block type="text_create_join_container"></block>
+      <block type="text_create_join_item"></block>
+      <block type="text_append"></block>
+      <block type="text_length"></block>
+      <block type="text_isEmpty"></block>
+      <block type="text_indexOf"></block>
+      <block type="text_charAt"></block>
+    </category>
+    <sep></sep>
+    <category name="Lists" colour="%{BKY_LISTS_HUE}">
+      <block type="lists_create_empty"></block>
+      <block type="lists_create_with"></block>
+      <block type="lists_repeat">
+        <value name="NUM">
+          <block type="m_number">
+            <field name="NUM">5</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_length"></block>
+      <block type="lists_isEmpty"></block>
+      <block type="lists_indexOf"></block>
+      <block type="lists_getIndex"></block>
+      <block type="lists_setIndex"></block>
+    </category>
+    <sep></sep>
+    <category name="Variables" custom="VARIABLE" colour="%{BKY_VARIABLES_HUE}">
+    </category>
+    <sep></sep>
+    <category name="Functions" custom="PROCEDURE" colour="%{BKY_PROCEDURES_HUE}">
+    </category>
+    <sep></sep>
+    <category name="Library" expanded="false">
+      <category name="Randomize">
+        <block type="procedures_defnoreturn">
+          <mutation>
+            <arg name="list"></arg>
+          </mutation>
+          <field name="NAME">randomize</field>
+          <statement name="STACK">
+            <block type="controls_for" inline="true">
+              <field name="VAR">x</field>
+              <value name="FROM">
+                <block type="m_number">
+                  <field name="NUM">1</field>
+                </block>
+              </value>
+              <value name="TO">
+                <block type="lists_length" inline="false">
+                  <value name="VALUE">
+                    <block type="variables_get">
+                      <field name="VAR">list</field>
+                    </block>
+                  </value>
+                </block>
+              </value>
+              <value name="BY">
+                <block type="m_number">
+                  <field name="NUM">1</field>
+                </block>
+              </value>
+              <statement name="DO">
+                <block type="variables_set" inline="false">
+                  <field name="VAR">y</field>
+                  <value name="VALUE">
+                    <block type="math_random_int" inline="true">
+                      <value name="FROM">
+                        <block type="m_number">
+                          <field name="NUM">1</field>
+                        </block>
+                      </value>
+                      <value name="TO">
+                        <block type="lists_length" inline="false">
+                          <value name="VALUE">
+                            <block type="variables_get">
+                              <field name="VAR">list</field>
+                            </block>
+                          </value>
+                        </block>
+                      </value>
+                    </block>
+                  </value>
+                  <next>
+                    <block type="variables_set" inline="false">
+                      <field name="VAR">temp</field>
+                      <value name="VALUE">
+                        <block type="lists_getIndex" inline="true">
+                          <mutation statement="false" at="true"></mutation>
+                          <field name="MODE">GET</field>
+                          <field name="WHERE">FROM_START</field>
+                          <value name="AT">
+                            <block type="variables_get">
+                              <field name="VAR">y</field>
+                            </block>
+                          </value>
+                          <value name="VALUE">
+                            <block type="variables_get">
+                              <field name="VAR">list</field>
+                            </block>
+                          </value>
+                        </block>
+                      </value>
+                      <next>
+                        <block type="lists_setIndex" inline="false">
+                          <value name="AT">
+                            <block type="variables_get">
+                              <field name="VAR">y</field>
+                            </block>
+                          </value>
+                          <value name="LIST">
+                            <block type="variables_get">
+                              <field name="VAR">list</field>
+                            </block>
+                          </value>
+                          <value name="TO">
+                            <block type="lists_getIndex" inline="true">
+                              <mutation statement="false" at="true"></mutation>
+                              <field name="MODE">GET</field>
+                              <field name="WHERE">FROM_START</field>
+                              <value name="AT">
+                                <block type="variables_get">
+                                  <field name="VAR">x</field>
+                                </block>
+                              </value>
+                              <value name="VALUE">
+                                <block type="variables_get">
+                                  <field name="VAR">list</field>
+                                </block>
+                              </value>
+                            </block>
+                          </value>
+                          <next>
+                            <block type="lists_setIndex" inline="false">
+                              <value name="AT">
+                                <block type="variables_get">
+                                  <field name="VAR">x</field>
+                                </block>
+                              </value>
+                              <value name="LIST">
+                                <block type="variables_get">
+                                  <field name="VAR">list</field>
+                                </block>
+                              </value>
+                              <value name="TO">
+                                <block type="variables_get">
+                                  <field name="VAR">temp</field>
+                                </block>
+                              </value>
+                            </block>
+                          </next>
+                        </block>
+                      </next>
+                    </block>
+                  </next>
+                </block>
+              </statement>
+            </block>
+          </statement>
+        </block>
+      </category>
+    </category>
+    <sep></sep>
+    <category name="KidBrightV1.3" colour=195>
+      <block type="kidbright_led"></block>
+      <block type="kidbright_temp"></block>
+      <block type="kidbright_i2c_scan"></block>
+    </category>
+
+  </xml>
+
+  <script src="js/code.js"></script>
+  <script src="js/webrepl.js"></script>
+  <script src="js/main.js"></script>
+  <script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script>on_start();</script>
+  
+  <script type="text/javascript">
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/twilight");
+    editor.session.setMode("ace/mode/python");
+    editor.setAutoScrollEditorIntoView(true);
+  </script>
+
+  <script src="js/modal.js"></script>
+
+</body>
+</html>
